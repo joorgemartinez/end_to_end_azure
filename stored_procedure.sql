@@ -1,12 +1,14 @@
-CREATE PROCEDURE UpdateWatermarkTable
-	@lastload VARCHAR(200)
+CREATE OR ALTER PROCEDURE UpdateWatermarkTable
+    @lastload DATETIME2
 AS 
 BEGIN 
-	-- Start the transaction 
-	BEGIN TRANSACTION;
+    SET NOCOUNT ON;
 
-	-- Update the incremental column in the table 
-	UPDATE watermark_table
-	SET last_load = @lastload
+    BEGIN TRANSACTION;
 
+    UPDATE dbo.watermark_table
+    SET last_load = @lastload;
+
+    COMMIT TRANSACTION;
 END;
+GO
