@@ -1,14 +1,13 @@
-CREATE OR ALTER PROCEDURE UpdateWatermarkTable
-    @lastload DATETIME2
-AS 
-BEGIN 
+CREATE OR ALTER PROCEDURE dbo.UpdateWatermarkTable
+    @lastload NVARCHAR(50)   -- recibido como texto
+AS
+BEGIN
     SET NOCOUNT ON;
 
-    BEGIN TRANSACTION;
+    -- Normaliza ISO 8601 (quita 'Z') y convierte
+    DECLARE @lastload_clean NVARCHAR(50) = REPLACE(@lastload, 'Z', '');
 
     UPDATE dbo.watermark_table
-    SET last_load = @lastload;
-
-    COMMIT TRANSACTION;
+    SET last_load = TRY_CONVERT(datetime2(3), @lastload_clean, 126);
 END;
 GO
