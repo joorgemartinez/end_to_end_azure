@@ -4,7 +4,6 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    -- Normaliza ISO 8601 (quita 'Z') y convierte
     DECLARE @lastload_clean NVARCHAR(50) = REPLACE(@lastload, 'Z', '');
 
     UPDATE dbo.watermark_table
